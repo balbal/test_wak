@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * 2018 Alma / Nabla SAS
+ *
+ * THE MIT LICENSE
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ *
+ * @author    Alma / Nabla SAS <contact@getalma.eu>
+ * @copyright 2018 Alma / Nabla SAS
+ * @license   https://opensource.org/licenses/MIT The MIT License
+ *
+ */
+-->
+
+<config>
+    <modules>
+        <Alma_Installments>
+            <version>1.1.1</version>
+        </Alma_Installments>
+    </modules>
+    <default>
+        <payment>
+            <alma_installments translate="excluded_products_message eligibility_message non_eligibility_message title description" module="Alma_Installments">
+                <model>alma/PaymentMethod</model>
+
+                <active>1</active>
+                <order_status>pending</order_status>
+                <payment_action>capture</payment_action>
+                <sort_order>1</sort_order>
+                <logging>0</logging>
+
+                <allowspecific>0</allowspecific>
+                <specificcountry>FR</specificcountry>
+
+                <excluded_product_types>virtual,downloadable</excluded_product_types>
+                <excluded_products_message>Virtual and downloadable products aren't eligible</excluded_products_message>
+
+                <live_api_key backend_model="adminhtml/system_config_backend_encrypted"/>
+                <test_api_key backend_model="adminhtml/system_config_backend_encrypted"/>
+                <api_mode>test</api_mode>
+
+                <show_eligibility_message>1</show_eligibility_message>
+                <eligibility_message>Eligible for monthly payments</eligibility_message>
+                <non_eligibility_message>Not eligible for monthly payments</non_eligibility_message>
+
+                <title>Monthly Payments with Alma</title>
+                <description>Pay in 3 monthly payments with your credit card.</description>
+
+                <p2x_enabled>0</p2x_enabled>
+                <p3x_enabled>1</p3x_enabled>
+                <p4x_enabled>0</p4x_enabled>
+            </alma_installments>
+        </payment>
+    </default>
+    <global>
+        <helpers>
+            <Alma_Installments>
+                <class>Alma_Installments_Helper</class>
+            </Alma_Installments>
+            <alma>
+                <class>Alma_Installments_Helper</class>
+            </alma>
+        </helpers>
+        <models>
+            <Alma_Installments>
+                <class>Alma_Installments_Model</class>
+            </Alma_Installments>
+            <alma>
+                <class>Alma_Installments_Model</class>
+            </alma>
+        </models>
+        <blocks>
+            <Alma_Installments>
+                <class>Alma_Installments_Block</class>
+            </Alma_Installments>
+            <alma>
+                <class>Alma_Installments_Block</class>
+            </alma>
+        </blocks>
+    </global>
+    <adminhtml>
+        <events>
+            <alma_saved_api_key>
+                <observers>
+                    <alma_observer>
+                        <type>model</type>
+                        <class>alma/observer</class>
+                        <method>handleSavedApiKey</method>
+                    </alma_observer>
+                </observers>
+            </alma_saved_api_key>
+        </events>
+        <translate>
+            <modules>
+                <Alma_Installments>
+                    <files>
+                        <default>Alma_Installments.csv</default>
+                    </files>
+                </Alma_Installments>
+            </modules>
+        </translate>
+    </adminhtml>
+    <frontend>
+        <layout>
+            <updates>
+                <Alma_Installments>
+                    <file>alma_layout.xml</file>
+                </Alma_Installments>
+            </updates>
+        </layout>
+        <routers>
+            <alma>
+                <use>standard</use>
+                <args>
+                    <module>Alma_Installments</module>
+                    <frontName>alma</frontName>
+                </args>
+            </alma>
+        </routers>
+        <translate>
+            <modules>
+                <Alma_Installments>
+                    <files>
+                        <default>Alma_Installments.csv</default>
+                    </files>
+                </Alma_Installments>
+            </modules>
+        </translate>
+    </frontend>
+</config>
